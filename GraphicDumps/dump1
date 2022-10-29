@@ -1,0 +1,14 @@
+digraph G{
+node[shape = record, fontsize = 14];
+info[label = "size = 1\n | null_elem = 701480"]
+Node701480[label = "<i>701480 \n | <v>0 \n | {<p> 7014D0 |<n>  7014D0}"]
+Node7014D0[style=filled, fillcolor = "#8F9EFF", label = "<i>7014D0 \n |<v>100 \n | {<p> 701480 |<n>  701480}"]
+edge [style="invis", color = "white"]
+info:n -> Node701480:w
+edge [style="solid", color = "red"]
+Node701480:<p> -> Node7014D0
+Node7014D0:<p> -> Node701480
+edge [color = "blue"]
+Node701480:<n> -> Node7014D0
+Node7014D0:<n> -> Node701480
+}

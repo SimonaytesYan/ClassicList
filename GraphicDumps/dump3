@@ -1,0 +1,23 @@
+digraph G{
+node[shape = record, fontsize = 14];
+info[label = "size = 4\n | null_elem = 701480"]
+Node701480[label = "<i>701480 \n | <v>0 \n | {<p> 7014F0 |<n>  701550}"]
+Node701550[style=filled, fillcolor = "#8F9EFF", label = "<i>701550 \n |<v>500 \n | {<p> 701480 |<n>  701530}"]
+Node701530[style=filled, fillcolor = "#8F9EFF", label = "<i>701530 \n |<v>400 \n | {<p> 701550 |<n>  701510}"]
+Node701510[style=filled, fillcolor = "#8F9EFF", label = "<i>701510 \n |<v>300 \n | {<p> 701530 |<n>  7014F0}"]
+Node7014F0[style=filled, fillcolor = "#8F9EFF", label = "<i>7014F0 \n |<v>200 \n | {<p> 701510 |<n>  701480}"]
+edge [style="invis", color = "white"]
+info:n -> Node701480:w
+edge [style="solid", color = "red"]
+Node701480:<p> -> Node7014F0
+Node7014F0:<p> -> Node701510
+Node701510:<p> -> Node701530
+Node701530:<p> -> Node701550
+Node701550:<p> -> Node701480
+edge [color = "blue"]
+Node701480:<n> -> Node701550
+Node701550:<n> -> Node701530
+Node701530:<n> -> Node701510
+Node701510:<n> -> Node7014F0
+Node7014F0:<n> -> Node701480
+}
