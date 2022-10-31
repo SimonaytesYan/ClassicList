@@ -1,5 +1,5 @@
-#ifndef __SYM_LIST__
-#define __SYM_LIST__
+#ifndef __SYM_CLASSIC_LIST__
+#define __SYM_CLASSIC_LIST__
 
 #include <stdlib.h>
 
@@ -44,39 +44,39 @@ void DumpList(List* list, const char* function, const char* file, int line);
 
 void GraphicDump(List* list);
 
-//!---------------------
-//!@param [in]  list        List for inserting an element
-//!@param [in]  val         Value of new element
-//!@param [in]  after_which Index of element after which put new element
-//!@param [out] index       (Optional).Index in which new element will insert
-//!@return Error code according to Errors.h
-//!
-//!---------------------
 int ListInsert(List* list, ListElem_t value, ListElem* after_which, ListElem** index = nullptr);
 
 int ListRemove(List* list, ListElem* index);
 
 int FindFree(List* list, ListElem** index);
 
-//!-----------------------
-//!Not iterate if index  indicates to the end of the list
-//!index will be -1 if there isn`t next element in list
-//!
-//!-----------------------
 int ListIterate(List* list, ListElem** index);
 
 int ListBegin(List* list, ListElem** index);
 
 int ListEnd(List* list, ListElem** index);
 
-//!---------------------
-//!@param [in]  list        List for searching logical index from physical
-//!@param [in]  phys_index  Physical index
-//!@param [out] log_index   Logical index of element(-1 if element not found)
-//!@return Error code according to Errors.h
-//!
-//!---------------------
-int PhysIndexToLogical(List* list, ListElem* phys_index, ListElem** log_index);
+int LogicalAddresToPhys(List* list, int logic_index, ListElem** physic_index);
+
+int LogicalAddresToPhys(List* list, int logic_index, ListElem** physic_index)
+{
+    ReturnIfError(ListCheck(list));
+
+    CHECK(physic_index == nullptr, "Pointer to physic index = nullptr", -1);
+
+    ListElem* index = list->null_elem;
+    *physic_index = nullptr;
+
+    for(int i = 0; i < logic_index; i++)
+    {
+        ListIterate(list, &index);
+        CHECK(index == nullptr, "Element not found\n", 0);
+    }
+
+    *physic_index = index;
+    
+    return 0;
+}
 
 int ListIterate(List* list, ListElem** index)
 {
@@ -124,6 +124,7 @@ void GraphicDump(List* list)
 
     fprintf(fp, "digraph G{\n");
     fprintf(fp, "node[shape = record, fontsize = 14];\n");
+    fprintf(fp, "splines = ortho\n");
 
     if (list == nullptr || list == POISON_PTR) 
         return;
@@ -152,7 +153,7 @@ void GraphicDump(List* list)
     for(int i = 0; i <= list->size; i++)
     {
         ListElem* prev = index->prev;
-        fprintf(fp, "Node%X:<p> -> Node%X\n", index, prev);
+        fprintf(fp, "Node%X -> Node%X\n", index, prev);
         index = prev;
         if (index == nullptr || index == list->null_elem)
             break;
@@ -163,7 +164,7 @@ void GraphicDump(List* list)
     for(int i = 0; i <= list->size; i++)
     {
         ListElem* next = index->next;
-        fprintf(fp, "Node%X:<n> -> Node%X\n", index, next);
+        fprintf(fp, "Node%X -> Node%X\n", index, next);
         index = next;
         if (index == nullptr || index == list->null_elem)
             break;
@@ -380,4 +381,4 @@ int ListInsert(List* list, ListElem_t value, ListElem* after_which, ListElem** i
     return 0;
 }
 
-#endif //__SYM_LIST__
+#endif //__SYM_CLASSIC_LIST__
